@@ -9,6 +9,18 @@
     <AssemblyOriginatorKeyFile>Image2Jpg.snk</AssemblyOriginatorKeyFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DelaySign>true</DelaySign>
+    <IsTestProject>true</IsTestProject>
+    <ExcludeTests Condition="'$(Configuration)'=='Release'">true</ExcludeTests>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release' and '$(ExcludeTests)'=='true'">
+    <DefineConstants>TRACE;RELEASE;RELEASE_WITHOUT_TESTS</DefineConstants>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)'!='Release'">
+    <PackageReference Include="NUnit" Version="4.3.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+  </ItemGroup>
 
 </Project> 
