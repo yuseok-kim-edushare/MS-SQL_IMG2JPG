@@ -35,81 +35,12 @@ jobs:
 
     - name: Restore dependencies
       run: |
-        dotnet restore PdfToImageConverter.csproj
+        dotnet restore ms-sql-image2jpg.csproj
     
     - name: Build solution for release
       run: |
-        dotnet build PdfToImageConverter.csproj --configuration ${{ env.BUILD_CONFIG }} --no-restore -f net481
-
-    - name: Install ILRepack
-      run: |
-        try {
-             nuget install ILRepack -Version 2.0.40 -OutputDirectory ${{ github.workspace }}\packages
-         } catch {
-             Write-Host "Error installing ILRepack: $_" -ForegroundColor Red
-         }
-
-    - name: Prepare Release Files
-      shell: pwsh
-      run: |
-        # Define paths
-        $buildPath = "${{ github.workspace }}\bin\${{ env.BUILD_CONFIG }}\${{ env.NET_VERSION }}\win-x86"
-        $releaseDir = "${{ github.workspace }}\release-files"
-        
-        # Create release directory
-        New-Item -Path $releaseDir -ItemType Directory -Force
-        
-        # Copy all build artifacts recursively
-        if (Test-Path $buildPath) {
-            Copy-Item -Path "$buildPath\x86\*" -Destination $releaseDir -Recurse -Force
-            Write-Host "Copied native dlls from $buildPath to $releaseDir"
-
-            # Merge NET 4.8.1 DLLs (using ILRepack)
-            ${{ github.workspace }}\packages\ILRepack.2.0.40\tools\ILRepack.exe /out:"$releaseDir\PdfToImageConverter.dll" `
-                /lib:"$buildPath" `
-                /targetplatform:"v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319" `
-                /union `
-                /copyattrs `
-                /internalize `
-                /keyfile:"${{ github.workspace }}\PdfToImageConverter.snk" `
-                "$buildPath\PdfToImageConverter.dll" `
-                "$buildPath\Microsoft.Extensions.Logging.Abstractions.dll" `
-                "$buildPath\PDFtoImage.dll" `
-                "$buildPath\SkiaSharp.dll" `
-                "$buildPath\System.Buffers.dll" `
-                "$buildPath\System.Memory.dll" `
-                "$buildPath\System.Numerics.Vectors.dll" `
-                "$buildPath\System.Runtime.CompilerServices.Unsafe.dll" `
-                "$buildPath\Microsoft.Bcl.AsyncInterfaces.dll" `
-                "$buildPath\Microsoft.Extensions.DependencyInjection.Abstractions.dll" `
-                "$buildPath\System.Diagnostics.DiagnosticSource.dll" `  
-                "$buildPath\System.Threading.Tasks.Extensions.dll"
-
-            # Delete unnecessary files
-            $filesToDelete = @(
-                "$releaseDir\libpdfium.so"
-            )
-
-            foreach ($file in $filesToDelete) {
-                if (Test-Path $file) {
-                    Remove-Item -Path $file -Force
-                    Write-Host "Deleted: $file"
-                }
-            }
-            
-            # List remaining files for verification
-            Write-Host "`nFiles included in release:"
-            Get-ChildItem -Path $releaseDir -Recurse | Where-Object { !$_.PSIsContainer } | ForEach-Object {
-                Write-Host $_.FullName.Replace($releaseDir, '')
-            }
-        } else {
-            Write-Host "::error::Build output directory not found at: $buildPath"
-            exit 1
-        }
-        
-        # Create ZIP archive
-        Compress-Archive -Path "$releaseDir\*" -DestinationPath "$releaseDir\PdfToImageConverter-Full.zip" -Force
-        
+        dotnet build ms-sql-image2jpg.csproj --configuration ${{ env.BUILD_CONFIG }} --no-restore -f net481
+       
     - name: Get latest release version and Generate release notes
       id: get_latest_release
       run: |
@@ -161,8 +92,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          ${{ github.workspace }}\release-files\PdfToImageConverter-Full.zip
-          ${{ github.workspace }}\release-files\PdfToImageConverter.dll
+          ${{ github.workspace }}\bin\Release\net481\win-x86\Image2Jpg.dll
         tag_name: ${{ env.new_release }}
         name: Release ${{ env.new_release }}
         body: ${{ env.release_notes }}

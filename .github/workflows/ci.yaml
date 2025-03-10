@@ -30,57 +30,14 @@ jobs:
      
     - name: Restore NuGet packages
       run: |
-        nuget restore PdfToImageConverter.csproj -ConfigFile nuget.config
+        nuget restore ms-sql-image2jpg.csproj -ConfigFile nuget.config
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
     
     - name: Build solution for testing
       run: |
-        dotnet build PdfToImageConverter.csproj --configuration Debug -f net481
-
-    - name: Install ILRepack and merge DLLs
-      run: |
-        try {
-             nuget install ILRepack -Version 2.0.40 -OutputDirectory ${{ github.workspace }}\packages
-         } catch {
-             Write-Host "Error installing ILRepack: $_" -ForegroundColor Red
-         }
-        
-        $buildPath = "${{ github.workspace }}\bin\Debug\net481\win-x86"
-        New-Item -Path "$buildPath\merged" -ItemType Directory -Force
-        ${{ github.workspace }}\packages\ILRepack.2.0.40\tools\ILRepack.exe /out:"$buildPath\merged\PdfToImageConverter.dll" `
-                /lib:"$buildPath" `
-                /targetplatform:"v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319" `
-                /union `
-                /copyattrs `
-                /internalize `
-                /keyfile:"${{ github.workspace }}\PdfToImageConverter.snk" `
-                "$buildPath\PdfToImageConverter.dll" `
-                "$buildPath\Microsoft.Extensions.Logging.Abstractions.dll" `
-                "$buildPath\PDFtoImage.dll" `
-                "$buildPath\SkiaSharp.dll" `
-                "$buildPath\System.Buffers.dll" `
-                "$buildPath\System.Memory.dll" `
-                "$buildPath\System.Numerics.Vectors.dll" `
-                "$buildPath\System.Runtime.CompilerServices.Unsafe.dll" `
-                "$buildPath\Microsoft.Bcl.AsyncInterfaces.dll"  `
-                "$buildPath\Microsoft.Extensions.DependencyInjection.Abstractions.dll" `
-                "$buildPath\System.Diagnostics.DiagnosticSource.dll" `  
-                "$buildPath\System.Threading.Tasks.Extensions.dll"
-
-    - name: Prepare test execution
-      run: |
-        $buildPath = "${{ github.workspace }}\bin\Debug\net481\win-x86"
-        Remove-Item -Path $buildPath\PdfToImageConverter.dll -Force
-        Remove-Item -Path $buildPath\Microsoft.Extensions.Logging.Abstractions.dll -Force
-        Remove-Item -Path $buildPath\PDFtoImage.dll -Force
-        Remove-Item -Path $buildPath\SkiaSharp.dll -Force
-        Remove-Item -Path $buildPath\System.Buffers.dll -Force
-        Remove-Item -Path $buildPath\System.Memory.dll -Force
-        Remove-Item -Path $buildPath\System.Numerics.Vectors.dll -Force
-        Remove-Item -Path $buildPath\System.Runtime.CompilerServices.Unsafe.dll -Force
-        Move-Item -Path $buildPath\merged\PdfToImageConverter.dll -Destination $buildPath
+        dotnet build ms-sql-image2jpg.csproj --configuration Debug -f net481
 
     - name: Run Integration Tests with COM object and PowerShell
       shell: pwsh
