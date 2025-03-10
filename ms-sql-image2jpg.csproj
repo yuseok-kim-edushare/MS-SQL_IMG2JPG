@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net481</TargetFrameworks>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <RootNamespace>Image2Jpg</RootNamespace>
+    <AssemblyName>Image2Jpg</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Image2Jpg.snk</AssemblyOriginatorKeyFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+
+</Project> 
