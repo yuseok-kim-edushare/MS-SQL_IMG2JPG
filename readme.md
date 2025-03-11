@@ -27,7 +27,6 @@ but any COM or .NET(C#) method calling can use this project artifact
    dotnet build ms-sql-image2jpg.csproj --configuration Release
    ```
 
-# Following docs are under construction
 ## Usage in PowerBuilder
 1. Use PowerBuilder's ".NET DLL Importer" tool to import the assembly:
    - Open your PowerBuilder project
@@ -36,5 +35,16 @@ but any COM or .NET(C#) method calling can use this project artifact
    - Generate the proxy object
 
 2. Create an instance of the converter:
+   ```powerbuilder
+   nvo_imageconverter lnvo_imageconverter
+   lnvo_imageconverter = create nvo_imageconverter
+   ```
 
-
+3. Call method of class
+  ```powerbuilder
+  lnvo_imageconverter.of_saveasjpg(bPhoto,ls_picture_path)
+  ```
+  ```powerbuilder
+  blob lb_converted_photo
+  lnvo_imageconverter.of_saveasjpg(bPhoto)
+  ```
