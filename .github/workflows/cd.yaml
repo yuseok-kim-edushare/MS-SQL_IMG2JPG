@@ -1,7 +1,7 @@
 name: Continuous Deployment
 on:
   workflow_run:
-    workflows: ["CI tests about Powerbuilder"]
+    workflows: ["CI tests"]
     types:
       - completed
     branches: [ "main" ]
