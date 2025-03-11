@@ -65,7 +65,14 @@ namespace Image2Jpg
             try
             {
                 byte[] jpgData = ConvertToJpg(imageData);
-                File.WriteAllBytes(filePath, jpgData);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+                using (FileStream fs = File.Open(filePath, FileMode.Create))
+                {
+                    fs.Write(jpgData, 0, jpgData.Length);
+                }
                 return true;
             }
             catch
