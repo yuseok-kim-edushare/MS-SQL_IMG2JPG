@@ -23,4 +23,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Copy test assets to output directory -->
+    <Content Include="test\*.*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project> 

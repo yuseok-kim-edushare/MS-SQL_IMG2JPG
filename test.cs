@@ -20,35 +20,12 @@ namespace Image2Jpg.Test
             // Initialize the converter
             converter = new ImageConverter();
             
-            // Find the test folder
+            // Test folder path will be directly in the output directory
             testFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test");
             
             if (!Directory.Exists(testFolderPath))
             {
-                testFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "test");
-                if (!Directory.Exists(testFolderPath))
-                {
-                    testFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "test");
-                    if (!Directory.Exists(testFolderPath))
-                    {
-                        // Try to find test folder by going up from bin folder to project root
-                        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                        // Navigate up from bin/Debug/net481/win-x86 to project root
-                        for (int i = 0; i < 4; i++)
-                        {
-                            baseDir = Path.GetDirectoryName(baseDir);
-                        }
-                        if (baseDir != null)
-                        {
-                            testFolderPath = Path.Combine(baseDir, "test");
-                        }
-                    }
-                }
-            }
-            
-            if (!Directory.Exists(testFolderPath))
-            {
-                Assert.Fail($"Test folder not found. Checked paths: {AppDomain.CurrentDomain.BaseDirectory}/test, {Directory.GetCurrentDirectory()}/test, {Directory.GetCurrentDirectory()}/../test, and multiple levels up from BaseDirectory");
+                Assert.Fail($"Test folder not found at {testFolderPath}. Make sure the project is properly configured to copy test assets.");
             }
             
             Console.WriteLine($"Test folder path: {testFolderPath}");
