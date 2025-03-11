@@ -8,7 +8,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Image2Jpg.snk</AssemblyOriginatorKeyFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DelaySign>true</DelaySign>
+    <DelaySign>false</DelaySign>
     <IsTestProject>true</IsTestProject>
     <ExcludeTests Condition="'$(Configuration)'=='Release'">true</ExcludeTests>
   </PropertyGroup>
