@@ -41,10 +41,10 @@ but any COM or .NET(C#) method calling can use this project artifact
    ```
 
 3. Call method of class
-  ```powerbuilder
-  lnvo_imageconverter.of_saveasjpg(bPhoto,ls_picture_path)
-  ```
-  ```powerbuilder
-  blob lb_converted_photo
-  lnvo_imageconverter.of_saveasjpg(bPhoto)
-  ```
+   ```powerbuilder
+   lnvo_imageconverter.of_saveasjpg(bPhoto,ls_picture_path)
+   ```
+   ```powerbuilder
+   blob lb_converted_photo
+   lnvo_imageconverter.of_converttojpg(bPhoto)
+   ```
