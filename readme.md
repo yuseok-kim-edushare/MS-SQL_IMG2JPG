@@ -48,3 +48,6 @@ but any COM or .NET(C#) method calling can use this project artifact
    blob lb_converted_photo
    lnvo_imageconverter.of_converttojpg(bPhoto)
    ```
+   ```powerbuilder
+   lnvo_imageconverter.of_convertfiletojpg(ls_picture_path,ls_output_path)
+   ```

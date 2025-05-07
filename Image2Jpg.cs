@@ -108,5 +108,37 @@ namespace Image2Jpg
         {
             return "1.0.0";
         }
+
+        /// <summary>
+        /// Converts an image file to JPG format
+        /// </summary>
+        /// <param name="inputFilePath">Path to the input image file</param>
+        /// <param name="outputFilePath">Path where the JPG file should be saved</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public bool ConvertFileToJpg(string inputFilePath, string outputFilePath)
+        {
+            if (string.IsNullOrWhiteSpace(inputFilePath))
+            {
+                throw new ArgumentException("Input file path cannot be null or empty", nameof(inputFilePath));
+            }
+            if (string.IsNullOrWhiteSpace(outputFilePath))
+            {
+                throw new ArgumentException("Output file path cannot be null or empty", nameof(outputFilePath));
+            }
+            if (!File.Exists(inputFilePath))
+            {
+                throw new FileNotFoundException("Input file not found", inputFilePath);
+            }
+
+            try
+            {
+                byte[] imageData = File.ReadAllBytes(inputFilePath);
+                return SaveAsJpg(imageData, outputFilePath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error converting file to JPG: {ex.Message}", ex);
+            }
+        }
     }
 }
