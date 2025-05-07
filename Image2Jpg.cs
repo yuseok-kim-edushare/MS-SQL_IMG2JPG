@@ -15,6 +15,16 @@ namespace Image2Jpg
     [ClassInterface(ClassInterfaceType.AutoDual)]
     public class ImageConverter
     {
+
+        /// <summary>
+        /// Write Log into C:\temp\Image2Jpg.log
+        /// </summary>
+        /// <param name="message">Message to write to the log</param>
+        private void WriteLog(string message)
+        {
+            File.AppendAllText("C:\\temp\\Image2Jpg.log", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}\n");
+        }
+
         /// <summary>
         /// Converts a byte array from MS-SQL Image column to JPG format
         /// </summary>
@@ -24,7 +34,8 @@ namespace Image2Jpg
         {
             if (imageData == null || imageData.Length == 0)
             {
-                throw new ArgumentException("Image data cannot be null or empty", nameof(imageData));
+                WriteLog("Image data cannot be null or empty");
+                return null;
             }
 
             try
@@ -45,7 +56,8 @@ namespace Image2Jpg
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error converting image data to JPG: {ex.Message}", ex);
+                WriteLog($"Error converting image data to JPG: {ex.Message}");
+                return null;
             }
         }
 
@@ -59,7 +71,8 @@ namespace Image2Jpg
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+                WriteLog("File path cannot be null or empty");
+                return false;
             }
 
             try
@@ -75,8 +88,9 @@ namespace Image2Jpg
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                WriteLog($"Error saving image data as JPG: {ex.Message}");
                 return false;
             }
         }
@@ -96,8 +110,8 @@ namespace Image2Jpg
                     return codec;
                 }
             }
-            
-            throw new Exception("JPEG codec not found");
+            WriteLog("JPEG codec not found");
+            return null;
         }
 
         /// <summary>
@@ -119,15 +133,18 @@ namespace Image2Jpg
         {
             if (string.IsNullOrWhiteSpace(inputFilePath))
             {
-                throw new ArgumentException("Input file path cannot be null or empty", nameof(inputFilePath));
+                WriteLog("Input file path cannot be null or empty");
+                return false;
             }
             if (string.IsNullOrWhiteSpace(outputFilePath))
             {
-                throw new ArgumentException("Output file path cannot be null or empty", nameof(outputFilePath));
+                WriteLog("Output file path cannot be null or empty");
+                return false;
             }
             if (!File.Exists(inputFilePath))
             {
-                throw new FileNotFoundException("Input file not found", inputFilePath);
+                WriteLog($"Input file not found: {inputFilePath}");
+                return false;
             }
 
             try
@@ -137,7 +154,8 @@ namespace Image2Jpg
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error converting file to JPG: {ex.Message}", ex);
+                WriteLog($"Error converting file to JPG: {ex.Message}");
+                return false;
             }
         }
     }
