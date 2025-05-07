@@ -22,7 +22,16 @@ namespace Image2Jpg
         /// <param name="message">Message to write to the log</param>
         private void WriteLog(string message)
         {
-            File.AppendAllText("C:\\temp\\Image2Jpg.log", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}\n");
+            string logFilePath = "C:\\temp\\Image2Jpg.log";
+            if (!Directory.Exists("C:\\temp"))
+            {
+                Directory.CreateDirectory("C:\\temp");
+            }
+            if (!File.Exists(logFilePath))
+            {
+                File.Create(logFilePath);
+            }
+            File.AppendAllText(logFilePath, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}\n");
         }
 
         /// <summary>
