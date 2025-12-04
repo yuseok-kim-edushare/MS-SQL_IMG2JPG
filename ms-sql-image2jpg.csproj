@@ -19,11 +19,7 @@
 
   <ItemGroup Condition="'$(Configuration)'!='Release'">
     <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0">
-      <!-- Prevent the test SDK from injecting its generated Program.cs into NET Framework builds -->
-      <ExcludeAssets>build</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
